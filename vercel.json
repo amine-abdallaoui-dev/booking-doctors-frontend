@@ -1,5 +1,4 @@
 {
-  "installCommand": "npm install --prefix backend && npm install",
   "buildCommand": "npm run build --prefix backend && npm run build",
   "outputDirectory": "dist",
   "rewrites": [

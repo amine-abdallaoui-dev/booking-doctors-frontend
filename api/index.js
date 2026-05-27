@@ -1,14 +1,27 @@
-const { connectDB } = require("../backend/dist/config/db");
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const routes = require("../backend/dist/routes").default;
+const { errorHandler } = require("../backend/dist/middleware/errorHandler");
 
-const app = require("../backend/dist/index");
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api", routes);
+app.use(errorHandler);
 
 module.exports = async (req, res) => {
-  try {
-    await connectDB();
-  } catch (err) {
-    console.error("DB connection failed:", err);
-    res.status(500).json({ error: "Database connection failed" });
-    return;
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/medibook";
+      await mongoose.connect(uri);
+      console.log("MongoDB connected");
+    } catch (err) {
+      console.error("DB connection failed:", err);
+      res.status(500).json({ error: "Database connection failed: " + err.message });
+      return;
+    }
   }
   app(req, res);
 };
