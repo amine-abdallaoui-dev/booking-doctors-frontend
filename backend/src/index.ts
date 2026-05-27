@@ -41,4 +41,4 @@ if (process.env.VERCEL !== "1") {
   start();
 }
 
-export default app;
+export = app;
