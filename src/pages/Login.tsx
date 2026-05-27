@@ -24,6 +24,7 @@ export default function Login() {
     }
     setLoading(true);
     const success = await login(email, password);
+    console.log(success)
     setLoading(false);
   };
 
