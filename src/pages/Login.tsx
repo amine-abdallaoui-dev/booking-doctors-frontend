@@ -23,7 +23,7 @@ export default function Login() {
       return;
     }
     setLoading(true);
-    const success = await login(email, password);
+    //const success = await login(email, password);
     setLoading(false);
   };
 
