@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
-dotenv.config();
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 import express from "express";
 import cors from "cors";
-import path from "path";
 import { connectDB } from "./config/db";
 import routes from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
@@ -30,12 +30,15 @@ app.get("/health", (_req, res) => {
 // Error handling
 app.use(errorHandler);
 
-// Start server
-async function start() {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`MediBook API running on port ${PORT}`);
-  });
+// Start server only when not running on Vercel
+if (process.env.VERCEL !== "1") {
+  async function start() {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`MediBook API running on port ${PORT}`);
+    });
+  }
+  start();
 }
 
-start();
+export default app;

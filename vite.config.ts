@@ -11,7 +11,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "https://booking-doctors-frontend-9un4.vercel.app",
+        target: "http://localhost:5000",
         changeOrigin: true,
       },
     },
